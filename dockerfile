@@ -1,0 +1,24 @@
+# Use Bun official image
+FROM oven/bun:latest
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package files first (for caching dependencies)
+# COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
+
+# Install dependencies
+RUN bun install --frozen-lockfile
+
+# Copy the rest of the app
+COPY . .
+
+# Expose the port for Elysia.js
+EXPOSE 80
+
+# Set environment variables (if needed)
+ENV NODE_ENV=production
+
+# Start the Elysia.js server
+CMD ["bun", "run", "src/index.ts"]
