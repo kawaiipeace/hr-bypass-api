@@ -80,7 +80,7 @@ getHrPlatform.get('/get-manager', async (req) => {
         tags: ['HR Platform'],
     },
     query: t.Object({
-        dept_sap: t.String({ example: '7306' })
+        dept_sap: t.String({ example: '8507' })
     })
 });
 
@@ -118,7 +118,7 @@ getHrPlatform.get('/get-department-detail', async (req) => {
         tags: ['HR Platform'],
     },
     query: t.Object({
-        dept_sap: t.String({ example: '0' })
+        dept_sap: t.String({ example: '8507' })
     })
 });
 
@@ -151,23 +151,18 @@ getHrPlatform.get('/get-emp-indept', async (req) => {
     }
 }, {
     detail: {
-        summary: "Get Employee in Department",
+        summary: "(รอเปิดเส้นจาก HR) Get Employee in Department",
         description: 'แสดงข้อมูลพนักงานภายใต้สังกัด',
         tags: ['HR Platform'],
     },
     query: t.Object({
-        dept_sap: t.String({ example: '0' }),
-        posi_status: t.String({ example: 'active' }), // Mark posi_status as optional
+        dept_sap: t.String({ example: '8507' }),
+        posi_status: t.Optional(t.String({ example: '1' })),
     })
 });
 
 // Get Employee Position Department
 getHrPlatform.get('/get-employee-posi-dept', async (req) => {
-    const { dept_sap, posi_status } = req.query;
-
-    if (!dept_sap) {
-        return { message: "ไม่มีรหัสแผนก", status: 400 };
-    }
 
     const API_URL = `${process.env.PROXY_HOST}/get-employee-posi-dept`;
     const API_KEY = process.env.API_KEY;
@@ -194,10 +189,6 @@ getHrPlatform.get('/get-employee-posi-dept', async (req) => {
         description: 'สำหรับเรียกข้อมูลพนักงาน รหัสสังกัด รหัสตำแหน่งเพื่ออัพเดทในปริมาณมาก',
         tags: ['HR Platform'],
     },
-    query: t.Object({
-        dept_sap: t.String({ example: '0' }),
-        posi_status: t.String({ example: 'active' }), // Mark posi_status as optional
-    })
 });
 
 // Get Department Under
@@ -234,7 +225,7 @@ getHrPlatform.get('/get-department-under', async (req) => {
         tags: ['HR Platform'],
     },
     query: t.Object({
-        dept_sap: t.String({ example: '7306' })
+        dept_sap: t.String({ example: '8507' })
     })
 });
 
