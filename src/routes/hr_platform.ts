@@ -13,14 +13,15 @@ getHrPlatform.get('/get-employee-detail-m', async (req) => {
     const emp_id = req.query.emp_id;
     const posi_status = req.query.posi_status;
 
-    if (!emp_id) {
-        return { "ไม่มีรหัสพนักงาน": 400 };
+    // Construct the URL with optional emp_id and posi_status
+    let API_URL = `${process.env.PROXY_HOST}/get-employee-detail-m`;
+    
+    if (emp_id) {
+        API_URL += `?emp_id=${emp_id}`;
     }
 
-    // Construct the URL with optional posi_status
-    let API_URL = `${process.env.PROXY_HOST}/get-employee-detail-m?emp_id=${emp_id}`;
     if (posi_status) {
-        API_URL += `&posi_status=${posi_status}`;
+        API_URL += emp_id ? `&posi_status=${posi_status}` : `?posi_status=${posi_status}`;
     }
 
     const API_KEY = process.env.API_KEY;
@@ -48,10 +49,11 @@ getHrPlatform.get('/get-employee-detail-m', async (req) => {
         tags: ['HR Platform'],
     },
     query: t.Object({
-        emp_id: t.String({ example: '505291' }),
+        emp_id: t.Optional(t.String({ example: '505291' })),
         posi_status: t.Optional(t.String({ example: '1' }))
     })
 });
+
 
 
 // Get Manager
