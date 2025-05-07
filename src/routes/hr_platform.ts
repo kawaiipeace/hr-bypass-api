@@ -10,20 +10,31 @@ const getHrPlatform = new Elysia({
 
 // Get Employee Size M
 getHrPlatform.get('/get-employee-detail-m', async (req) => {
-    const emp_id = req.query.emp_id;
-    const posi_status = req.query.posi_status;
+    const {
+        emp_id,
+        posi_status,
+        first_name,
+        last_name,
+        posi_code,
+        dept_sap,
+        dept_change_code,
+        dept_sap_short,
+        orderby
+    } = req.query;
 
-    // Construct the URL with optional emp_id and posi_status
-    let API_URL = `${process.env.PROXY_HOST}/get-employee-detail-m`;
-    
-    if (emp_id) {
-        API_URL += `?emp_id=${emp_id}`;
-    }
+    const queryParams = new URLSearchParams();
 
-    if (posi_status) {
-        API_URL += emp_id ? `&posi_status=${posi_status}` : `?posi_status=${posi_status}`;
-    }
+    if (emp_id) queryParams.append('emp_id', emp_id);
+    if (posi_status) queryParams.append('posi_status', posi_status);
+    if (first_name) queryParams.append('first_name', first_name);
+    if (last_name) queryParams.append('last_name', last_name);
+    if (posi_code) queryParams.append('posi_code', posi_code);
+    if (dept_sap) queryParams.append('dept_sap', dept_sap);
+    if (dept_change_code) queryParams.append('dept_change_code', dept_change_code);
+    if (dept_sap_short) queryParams.append('dept_sap_short', dept_sap_short);
+    if (orderby) queryParams.append('orderby', orderby);
 
+    const API_URL = `${process.env.PROXY_HOST}/get-employee-detail-m?${queryParams.toString()}`;
     const API_KEY = process.env.API_KEY;
 
     try {
@@ -45,16 +56,24 @@ getHrPlatform.get('/get-employee-detail-m', async (req) => {
 }, {
     detail: {
         summary: "Get Employee Details (Size M)",
-        description: 'ดึงข้อมูลชุดพนักงานไซส์ M จากรหัสพนักงาน',
+        description: 'ดึงข้อมูลชุดพนักงานไซส์ M จากรหัสพนักงานหรือเงื่อนไขอื่นๆ',
         tags: ['HR Platform'],
     },
     query: t.Object({
         emp_id: t.Optional(t.String({ example: '505291' })),
-        posi_status: t.Optional(t.String({ example: '1' }))
+        posi_status: t.Optional(t.String({
+            example: '1',
+            description: 'กลุ่มพนักงาน 1 : พนง. ปกติ, 2 : ลูกจ้าง, 3 : พนง. พ้นสภาพ, 4 : พนง. ทดลองงาน — สามารถระบุเช่น 12 เพื่อเลือก 2 กลุ่ม หรือ 124 เพื่อเลือก 3 กลุ่ม'
+        })),
+        first_name: t.Optional(t.String({ example: 'ศรัญยู' })),
+        last_name: t.Optional(t.String({ example: 'บริรัตน์ฤทธิ์' })),
+        posi_code: t.Optional(t.String({ example: '1111' })),
+        dept_sap: t.Optional(t.String({ example: '8526' })),
+        dept_change_code: t.Optional(t.String({ example: '530203002000000' })),
+        dept_sap_short: t.Optional(t.String({ example: 'กอพ.1' })),
+        orderby: t.Optional(t.String({ example: 'first_name ASC' }))
     })
 });
-
-
 
 // Get Manager
 getHrPlatform.get('/get-manager', async (req) => {
