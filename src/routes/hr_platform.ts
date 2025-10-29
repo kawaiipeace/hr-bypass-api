@@ -258,4 +258,80 @@ getHrPlatform.get('/get-department-under', async (req) => {
     })
 });
 
+// Get Department Recursive
+getHrPlatform.get('/get-department-recursive', async (req) => {
+    const dept_sap = req.query.dept_sap;
+
+    if (!dept_sap) {
+        return { "ไม่มีรหัสแผนก": 400 };
+    }
+
+    const API_URL = `${process.env.PROXY_HOST}/get-department-recursive?dept_sap=${dept_sap}`;
+    const API_KEY = process.env.API_KEY;
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: { "apikey": API_KEY ?? "" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return { data, status: 200 };
+    } catch (error) {
+        console.error("พบปัญหาการส่งร้องขอข้อมูล: ", error);
+        return { error: error instanceof Error ? error.message : 'ไม่ทราบปัญหา', status: 500 };
+    }
+}, {
+    detail: {
+        summary: "Get Department Recursive",
+        description: 'แสดงข้อมูลสังกัดแบบ recursive',
+        tags: ['HR Platform'],
+    },
+    query: t.Object({
+        dept_sap: t.String({ example: '8507' })
+    })
+});
+
+// Get Department
+getHrPlatform.get('/get-department', async (req) => {
+    const dept_sap = req.query.dept_sap;
+
+    if (!dept_sap) {
+        return { "ไม่มีรหัสแผนก": 400 };
+    }
+
+    const API_URL = `${process.env.PROXY_HOST}/get-department?dept_sap=${dept_sap}`;
+    const API_KEY = process.env.API_KEY;
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: { "apikey": API_KEY ?? "" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return { data, status: 200 };
+    } catch (error) {
+        console.error("พบปัญหาการส่งร้องขอข้อมูล: ", error);
+        return { error: error instanceof Error ? error.message : 'ไม่ทราบปัญหา', status: 500 };
+    }
+}, {
+    detail: {
+        summary: "Get Department",
+        description: 'แสดงข้อมูลสังกัด',
+        tags: ['HR Platform'],
+    },
+    query: t.Object({
+        dept_sap: t.String({ example: '8507' })
+    })
+});
+
 export default getHrPlatform;

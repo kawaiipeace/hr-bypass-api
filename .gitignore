@@ -42,3 +42,7 @@ package-lock.json
 **/*.bun
 
 /[old]
+
+.env.local
+.env.dev
+.env.prod
