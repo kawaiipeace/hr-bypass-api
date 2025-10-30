@@ -44,5 +44,4 @@ package-lock.json
 /[old]
 
 .env.local
-.env.dev
-.env.prod
+.env

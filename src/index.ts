@@ -2,7 +2,8 @@ import { Elysia } from "elysia";
 import cors from "@elysiajs/cors";
 import { swagger } from '@elysiajs/swagger';
 
-import hrplatformRoutes from "./routes/hr_platform";
+import hrplatformRoutesDev from "./routes/hr_platform_dev";
+import hrplatformRoutesProd from "./routes/hr_platform_prod";
 
 const app = new Elysia()
   .use(cors({
@@ -10,11 +11,12 @@ const app = new Elysia()
     methods: ['GET', 'POST'],
   }))
   .use(swagger())
-  .use(hrplatformRoutes)
+  .use(hrplatformRoutesDev)
+  .use(hrplatformRoutesProd)
   .get('/', ({ redirect }) => {
       return redirect('/swagger')
   })
-  .listen(3210);
+  .listen(4100);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
