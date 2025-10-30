@@ -76,14 +76,14 @@ getHrPlatform.get('/get-employee-detail-m', async (req) => {
 });
 
 // Get Manager
-getHrPlatform.get('/get-manager', async (req) => {
+getHrPlatform.get('/get-manager-structure', async (req) => {
     const dept_sap = req.query.dept_sap;
 
     if (!dept_sap) {
         return { "ไม่มีรหัสแผนก": 400 };
     }
 
-    const API_URL = `${process.env.API_URL_PROD}/get-manager?dept_sap=${dept_sap}`;
+    const API_URL = `${process.env.API_URL_PROD}/get-manager-structure?dept_sap=${dept_sap}`;
     const API_KEY = process.env.API_KEY_PROD;
 
     try {
