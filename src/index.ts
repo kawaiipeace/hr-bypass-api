@@ -18,7 +18,7 @@ const app = new Elysia()
   .get(`${BASE_PATH}/`, ({ redirect }) => {
       return redirect(`${BASE_PATH}/swagger`)
   })
-  .listen(4100);
+  .listen(process.env.PORT || 4100);
 
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
