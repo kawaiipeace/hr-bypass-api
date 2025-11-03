@@ -2,7 +2,7 @@ import { Elysia } from 'elysia';
 import { t } from "elysia";
 
 const getHrPlatform = new Elysia({
-    prefix: '/hr-platform-dev',
+    prefix: `${process.env.BASE_PATH || ''}/hr-platform-dev`,
     detail: {
         tags: ['hr-platform-development']
     }

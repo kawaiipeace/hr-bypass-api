@@ -5,16 +5,18 @@ import { swagger } from '@elysiajs/swagger';
 import hrplatformRoutesDev from "./routes/hr_platform_dev";
 import hrplatformRoutesProd from "./routes/hr_platform_prod";
 
+const BASE_PATH = process.env.BASE_PATH || '';
+
 const app = new Elysia()
   .use(cors({
     origin: '*',
     methods: ['GET', 'POST'],
   }))
-  .use(swagger())
+  .use(swagger({ path: `${BASE_PATH}/swagger` }))
   .use(hrplatformRoutesDev)
   .use(hrplatformRoutesProd)
-  .get('/', ({ redirect }) => {
-      return redirect('/swagger')
+  .get(`${BASE_PATH}/`, ({ redirect }) => {
+      return redirect(`${BASE_PATH}/swagger`)
   })
   .listen(4100);
 
