@@ -75,44 +75,6 @@ getHrPlatform.get('/get-employee-detail-m', async (req) => {
     })
 });
 
-// Get Manager Structure
-getHrPlatform.get('/get-manager-structure', async (req) => {
-    const dept_sap = req.query.dept_sap;
-
-    if (!dept_sap) {
-        return { "ไม่มีรหัสแผนก": 400 };
-    }
-
-    const API_URL = `${process.env.API_URL_PROD}/get-manager-structure?dept_sap=${dept_sap}`;
-    const API_KEY = process.env.API_KEY_PROD;
-
-    try {
-        const response = await fetch(API_URL, {
-            method: "GET",
-            headers: { "apikey": API_KEY ?? "" },
-        });
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        return { data, status: 200 };
-    } catch (error) {
-        console.error("พบปัญหาการส่งร้องขอข้อมูล: ", error);
-        return { error: error instanceof Error ? error.message : 'ไม่ทราบปัญหา', status: 500 };
-    }
-}, {
-    detail: {
-        summary: "Get Manager by Department - Prod",
-        description: 'แสดงข้อมูลผู้บังคับบัญชาหน่วยงาน และผู้ช่วยผู้บังคับบัญชาของหน่วยงาน รวมถึงผู้บังคับบัญชาสูงกว่าหนึ่งระดับ (Production Environment)',
-        tags: ['HR Platform Prod'],
-    },
-    query: t.Object({
-        dept_sap: t.String({ example: '8507' })
-    })
-});
-
 // Get Employee Manager
 getHrPlatform.post('/get-emp-manager', async (req) => {
     const dept_sap = req.query.dept_sap;
@@ -142,7 +104,45 @@ getHrPlatform.post('/get-emp-manager', async (req) => {
     }
 }, {
     detail: {
-        summary: "Get Manager by Department - Prod",
+        summary: "POST Manager by Department - Prod",
+        description: 'แสดงข้อมูลผู้บังคับบัญชาหน่วยงาน และผู้ช่วยผู้บังคับบัญชาของหน่วยงาน รวมถึงผู้บังคับบัญชาสูงกว่าหนึ่งระดับ (Production Environment)',
+        tags: ['HR Platform Prod'],
+    },
+    query: t.Object({
+        dept_sap: t.String({ example: '8507' })
+    })
+});
+
+// Get Manager Structure
+getHrPlatform.get('/get-manager-structure', async (req) => {
+    const dept_sap = req.query.dept_sap;
+
+    if (!dept_sap) {
+        return { "ไม่มีรหัสแผนก": 400 };
+    }
+
+    const API_URL = `${process.env.API_URL_PROD}/get-manager-structure?dept_sap=${dept_sap}`;
+    const API_KEY = process.env.API_KEY_PROD;
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: { "apikey": API_KEY ?? "" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return { data, status: 200 };
+    } catch (error) {
+        console.error("พบปัญหาการส่งร้องขอข้อมูล: ", error);
+        return { error: error instanceof Error ? error.message : 'ไม่ทราบปัญหา', status: 500 };
+    }
+}, {
+    detail: {
+        summary: "Get Manager Structure - Prod",
         description: 'แสดงข้อมูลผู้บังคับบัญชาหน่วยงาน และผู้ช่วยผู้บังคับบัญชาของหน่วยงาน รวมถึงผู้บังคับบัญชาสูงกว่าหนึ่งระดับ (Production Environment)',
         tags: ['HR Platform Prod'],
     },
